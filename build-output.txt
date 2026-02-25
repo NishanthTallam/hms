@@ -1,0 +1,55 @@
+﻿Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 13.7s
+  Running TypeScript ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/27) ...
+  Generating static pages using 7 workers (6/27) 
+  Generating static pages using 7 workers (13/27) 
+  Generating static pages using 7 workers (20/27) 
+Γ£ô Generating static pages using 7 workers (27/27) in 753.2ms
+  Finalizing page optimization ...
+
+Route (app)
+Γöî ╞Æ /
+Γö£ Γùï /_not-found
+Γö£ ╞Æ /api/admin/hospitals
+Γö£ ╞Æ /api/admin/hospitals/[id]
+Γö£ ╞Æ /api/appointments
+Γö£ ╞Æ /api/appointments/[id]
+Γö£ ╞Æ /api/auth/[...all]
+Γö£ ╞Æ /api/billing
+Γö£ ╞Æ /api/billing/[id]
+Γö£ ╞Æ /api/dashboard/stats
+Γö£ ╞Æ /api/doctors
+Γö£ ╞Æ /api/doctors/[id]
+Γö£ ╞Æ /api/patients
+Γö£ ╞Æ /api/patients/[id]
+Γö£ ╞Æ /api/pharmacy
+Γö£ ╞Æ /api/pharmacy/[id]
+Γö£ ╞Æ /api/records
+Γö£ ╞Æ /api/records/[id]
+Γö£ ╞Æ /hospital/appointments
+Γö£ ╞Æ /hospital/appointments/new
+Γö£ ╞Æ /hospital/billing
+Γö£ ╞Æ /hospital/billing/[id]
+Γö£ ╞Æ /hospital/billing/new
+Γö£ ╞Æ /hospital/dashboard
+Γö£ ╞Æ /hospital/doctors
+Γö£ ╞Æ /hospital/patients
+Γö£ ╞Æ /hospital/patients/[id]
+Γö£ ╞Æ /hospital/patients/new
+Γö£ ╞Æ /hospital/pharmacy
+Γö£ ╞Æ /hospital/pharmacy/new
+Γö£ ╞Æ /hospital/records
+Γö£ ╞Æ /hospital/records/new
+Γö£ Γùï /login
+Γö£ ╞Æ /super-admin/dashboard
+Γöö Γùï /super-admin/hospitals
+
+
+Γùï  (Static)   prerendered as static content
+╞Æ  (Dynamic)  server-rendered on demand
+
