@@ -18,10 +18,10 @@ interface Doctor { id: string; name: string; specialization: string; phone: stri
 
 export default function DoctorsPage() {
     const [doctors, setDoctors] = useState<Doctor[]>([]); const [loading, setLoading] = useState(true); const [dialogOpen, setDialogOpen] = useState(false); const [creating, setCreating] = useState(false); const [error, setError] = useState(""); const [deleteId, setDeleteId] = useState<string | null>(null);
-    const [form, setForm] = useState({ name: "", specialization: "", phone: "", email: "", consultationFee: "", availableDays: [] as string[] });
+    const [form, setForm] = useState({ name: "", specialization: "", phone: "", email: "", password: "", consultationFee: "", availableDays: [] as string[] });
     const fetchDoctors = async () => { const r = await fetch("/api/doctors"); if (r.ok) setDoctors(await r.json()); setLoading(false); };
     useEffect(() => { fetchDoctors(); }, []);
-    const handleCreate = async (e: React.FormEvent) => { e.preventDefault(); setCreating(true); setError(""); const res = await fetch("/api/doctors", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }); if (!res.ok) { const d = await res.json(); setError(d.error || "Failed"); setCreating(false); return; } setDialogOpen(false); setForm({ name: "", specialization: "", phone: "", email: "", consultationFee: "", availableDays: [] }); setCreating(false); fetchDoctors(); };
+    const handleCreate = async (e: React.FormEvent) => { e.preventDefault(); setCreating(true); setError(""); const res = await fetch("/api/doctors", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }); if (!res.ok) { const d = await res.json(); setError(d.error || "Failed"); setCreating(false); return; } setDialogOpen(false); setForm({ name: "", specialization: "", phone: "", email: "", password: "", consultationFee: "", availableDays: [] }); setCreating(false); fetchDoctors(); };
     const toggleDay = (day: string) => { setForm(f => ({ ...f, availableDays: f.availableDays.includes(day) ? f.availableDays.filter(d => d !== day) : [...f.availableDays, day] })); };
     const handleDelete = async () => { if (!deleteId) return; await fetch(`/api/doctors/${deleteId}`, { method: "DELETE" }); setDeleteId(null); fetchDoctors(); };
 
@@ -36,8 +36,11 @@ export default function DoctorsPage() {
                                 <div><Label>Name *</Label><Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required /></div>
                                 <div><Label>Specialization *</Label><Select value={form.specialization} onValueChange={v => setForm({ ...form, specialization: v })}><SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger><SelectContent>{SPECIALIZATIONS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent></Select></div>
                                 <div><Label>Phone</Label><Input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
-                                <div><Label>Email</Label><Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
                                 <div><Label>Consultation Fee</Label><Input type="number" value={form.consultationFee} onChange={e => setForm({ ...form, consultationFee: e.target.value })} /></div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div><Label>Email *</Label><Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required /></div>
+                                <div><Label>Password *</Label><Input type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required /></div>
                             </div>
                             <div><Label>Available Days</Label><div className="flex flex-wrap gap-2 mt-1">{DAYS.map(d => (
                                 <button key={d} type="button" onClick={() => toggleDay(d)} className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${form.availableDays.includes(d) ? "bg-orange-100 text-orange-700 border-orange-200" : "bg-gray-50 text-gray-500 border-gray-200"}`}>{d.slice(0, 3)}</button>

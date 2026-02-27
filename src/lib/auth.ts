@@ -34,6 +34,16 @@ export const auth = betterAuth({
                 required: false,
                 input: false,
             },
+            staffRole: {
+                type: "string",
+                required: false,
+                input: false,
+            },
+            patientId: {
+                type: "string",
+                required: false,
+                input: false,
+            },
         },
     },
 });

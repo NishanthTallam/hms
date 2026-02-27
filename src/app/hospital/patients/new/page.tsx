@@ -14,7 +14,7 @@ export default function NewPatientPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const [form, setForm] = useState({ name: "", phone: "", email: "", dob: "", gender: "", bloodGroup: "", address: "", emergencyContactName: "", emergencyContactPhone: "" });
+    const [form, setForm] = useState({ name: "", phone: "", email: "", password: "", dob: "", gender: "", bloodGroup: "", address: "", emergencyContactName: "", emergencyContactPhone: "" });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); setLoading(true); setError("");
@@ -35,7 +35,10 @@ export default function NewPatientPage() {
                         <div><Label>Date of Birth</Label><Input type="date" value={form.dob} onChange={e => setForm({ ...form, dob: e.target.value })} /></div>
                         <div><Label>Gender</Label><Select value={form.gender} onValueChange={v => setForm({ ...form, gender: v })}><SelectTrigger><SelectValue placeholder="Select Gender" /></SelectTrigger><SelectContent><SelectItem value="male">Male</SelectItem><SelectItem value="female">Female</SelectItem><SelectItem value="other">Other</SelectItem></SelectContent></Select></div>
                         <div><Label>Blood Group</Label><Select value={form.bloodGroup} onValueChange={v => setForm({ ...form, bloodGroup: v })}><SelectTrigger><SelectValue placeholder="Select Blood Group" /></SelectTrigger><SelectContent>{["A_POS", "A_NEG", "B_POS", "B_NEG", "AB_POS", "AB_NEG", "O_POS", "O_NEG"].map(bg => <SelectItem key={bg} value={bg}>{bg.replace("_POS", "+").replace("_NEG", "-")}</SelectItem>)}</SelectContent></Select></div>
-                        <div><Label>Email</Label><Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><Label>Email *</Label><Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required /></div>
+                        <div><Label>Password *</Label><Input type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required /></div>
                     </div>
                     <div><Label>Address</Label><Textarea value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} rows={2} /></div>
                     <hr /><h3 className="text-sm font-semibold text-gray-700">Emergency Contact</h3>

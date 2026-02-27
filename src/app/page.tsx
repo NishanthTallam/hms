@@ -11,6 +11,8 @@ export default async function HomePage() {
   const role = (session.user as any).role;
   if (role === "super_admin") {
     redirect("/super-admin/dashboard");
+  } else if (role === "patient") {
+    redirect("/patient/dashboard");
   } else {
     redirect("/hospital/dashboard");
   }

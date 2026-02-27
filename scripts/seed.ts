@@ -8,16 +8,8 @@ const prisma = new PrismaClient();
 
 import crypto from "crypto";
 import { auth } from "../src/lib/auth";
+import { hashPassword } from "better-auth/crypto";
 
-async function hashPassword(password: string): Promise<string> {
-    const { hash } = auth.options.emailAndPassword?.password || {};
-    if (hash) {
-        return await hash(password);
-    }
-    // Fallback to importing it if the auth config doesn't provide it
-    const { hashPassword: baHash } = await import("better-auth/crypto");
-    return await baHash(password);
-}
 
 async function createOrUpdateUser(email: string, name: string, role: any, password: string, hospitalId?: string) {
     const passwordHash = await hashPassword(password);

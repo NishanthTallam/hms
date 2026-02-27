@@ -16,15 +16,25 @@ import {
     Menu,
     X,
     Hospital,
+    AlertCircle,
+    Bed,
+    Droplets,
+    Wind,
+    FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
     { label: "Dashboard", href: "/hospital/dashboard", icon: LayoutDashboard },
+    { label: "Emergency", href: "/hospital/emergency", icon: AlertCircle },
     { label: "Patients", href: "/hospital/patients", icon: Users },
+    { label: "Beds", href: "/hospital/beds", icon: Bed },
     { label: "Doctors", href: "/hospital/doctors", icon: Stethoscope },
     { label: "Appointments", href: "/hospital/appointments", icon: CalendarDays },
     { label: "Medical Records", href: "/hospital/records", icon: ClipboardList },
+    { label: "Prescriptions", href: "/hospital/prescriptions", icon: FileText },
+    { label: "Blood Bank", href: "/hospital/blood-bank", icon: Droplets },
+    { label: "Oxygen", href: "/hospital/oxygen", icon: Wind },
     { label: "Billing", href: "/hospital/billing", icon: Receipt },
     { label: "Pharmacy", href: "/hospital/pharmacy", icon: Pill },
 ];
@@ -42,7 +52,15 @@ export function Sidebar({ hospitalName = "Hospital", userName = "User", userRole
 
     const filteredNavItems = navItems.filter(item => {
         if (userRole === "doctor") {
-            return !["/hospital/billing", "/hospital/pharmacy", "/hospital/doctors"].includes(item.href);
+            const allowedForDoctors = [
+                "/hospital/dashboard",
+                "/hospital/emergency",
+                "/hospital/patients",
+                "/hospital/records",
+                "/hospital/prescriptions",
+                "/hospital/appointments"
+            ];
+            return allowedForDoctors.includes(item.href);
         }
         return true;
     });

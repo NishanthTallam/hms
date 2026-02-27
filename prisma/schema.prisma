@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,6 +15,7 @@ enum Role {
   admin
   doctor
   staff
+  patient
 }
 
 enum Gender {
@@ -57,6 +57,63 @@ enum RecordType {
   IP
 }
 
+enum BedStatus {
+  available
+  occupied
+  maintenance
+  reserved
+}
+
+enum BedType {
+  general
+  semi_private
+  private
+  ICU
+  NICU
+  HDU
+  emergency
+}
+
+enum BloodUnitStatus {
+  available
+  reserved
+  used
+  expired
+  discarded
+}
+
+enum CylinderStatus {
+  full
+  in_use
+  empty
+  under_refill
+  maintenance
+  condemned
+}
+
+enum CylinderSize {
+  B_TYPE
+  D_TYPE
+  E_TYPE
+  G_TYPE
+}
+
+enum TriageLevel {
+  critical
+  urgent
+  semi_urgent
+  non_urgent
+}
+
+enum EmergencyStatus {
+  waiting
+  in_treatment
+  admitted
+  discharged
+  referred
+  deceased
+}
+
 // ─── HOSPITAL (Tenant) ────────────────────────────────────────
 
 model Hospital {
@@ -72,13 +129,20 @@ model Hospital {
   updatedAt DateTime @updatedAt
 
   // Relations
-  users        User[]
-  patients     Patient[]
-  doctors      Doctor[]
-  appointments Appointment[]
-  records      Record[]
-  invoices     Invoice[]
-  medicines    Medicine[]
+  users           User[]
+  patients        Patient[]
+  doctors         Doctor[]
+  appointments    Appointment[]
+  records         Record[]
+  invoices        Invoice[]
+  medicines       Medicine[]
+  prescriptions   Prescription[]
+  wards           Ward[]
+  beds            Bed[]
+  bloodUnits      BloodUnit[]
+  bloodRequests   BloodRequest[]
+  oxygenCylinders OxygenCylinder[]
+  emergencyCases  EmergencyCase[]
 
   @@map("hospitals")
 }
@@ -93,9 +157,13 @@ model User {
   email        String    @unique
   passwordHash String
   role         Role      @default(staff)
+  staffRole    String?
   isActive     Boolean   @default(true)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+
+  patientId    String?   @unique
+  patient      Patient?  @relation("PatientUser", fields: [patientId], references: [id])
 
   // Relations
   doctor              Doctor?
@@ -147,9 +215,14 @@ model Patient {
   updatedAt             DateTime    @updatedAt
 
   // Relations
-  appointments Appointment[]
-  records      Record[]
-  invoices     Invoice[]
+  user           User?          @relation("PatientUser")
+  appointments   Appointment[]
+  records        Record[]
+  invoices       Invoice[]
+  prescriptions  Prescription[]
+  beds           Bed[]          @relation("BedPatient")
+  bloodRequests  BloodRequest[]
+  emergencyCases EmergencyCase[]
 
   @@index([hospitalId])
   @@index([phone])
@@ -174,8 +247,10 @@ model Doctor {
   updatedAt       DateTime @updatedAt
 
   // Relations
-  appointments Appointment[]
-  records      Record[]
+  appointments   Appointment[]
+  records        Record[]
+  prescriptions  Prescription[]
+  emergencyCases EmergencyCase[]
 
   @@index([hospitalId])
   @@map("doctors")
@@ -234,6 +309,8 @@ model Record {
   roomNumber    String?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+
+  prescriptions Prescription[]
 
   @@index([hospitalId])
   @@index([patientId])
@@ -323,4 +400,197 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+// ─── NEW: PRESCRIPTION ────────────────────────────────────────
+
+model Prescription {
+  id         String    @id @default(uuid())
+  hospitalId String
+  hospital   Hospital  @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  patientId  String
+  patient    Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  recordId   String?
+  record     Record?   @relation(fields: [recordId], references: [id], onDelete: SetNull)
+  doctorId   String?
+  doctor     Doctor?   @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  items      Json      @default("[]")
+  status     String    @default("active")
+  issuedAt   DateTime  @default(now())
+  validUntil DateTime?
+  notes      String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([hospitalId])
+  @@index([patientId])
+  @@index([doctorId])
+  @@map("prescriptions")
+}
+
+// ─── NEW: WARD & BED ──────────────────────────────────────────
+
+model Ward {
+  id         String   @id @default(uuid())
+  hospitalId String
+  hospital   Hospital @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  name       String
+  floor      String?
+  totalBeds  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  beds Bed[]
+
+  @@index([hospitalId])
+  @@map("wards")
+}
+
+model Bed {
+  id               String    @id @default(uuid())
+  hospitalId       String
+  hospital         Hospital  @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  wardId           String
+  ward             Ward      @relation(fields: [wardId], references: [id], onDelete: Cascade)
+  bedNumber        String
+  type             BedType   @default(general)
+  status           BedStatus @default(available)
+  currentPatientId String?
+  currentPatient   Patient?  @relation("BedPatient", fields: [currentPatientId], references: [id], onDelete: SetNull)
+  admittedAt       DateTime?
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([hospitalId])
+  @@index([wardId])
+  @@index([status])
+  @@map("beds")
+}
+
+// ─── NEW: BLOOD BANK ──────────────────────────────────────────
+
+model BloodUnit {
+  id            String          @id @default(uuid())
+  hospitalId    String
+  hospital      Hospital        @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  bloodGroup    BloodGroup
+  units         Int
+  status        BloodUnitStatus @default(available)
+  donorName     String?
+  donorContact  String?
+  collectedAt   DateTime        @default(now())
+  expiryDate    DateTime
+  crossMatchFor String?
+  notes         String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([hospitalId])
+  @@index([bloodGroup])
+  @@index([status])
+  @@map("blood_units")
+}
+
+model BloodRequest {
+  id          String     @id @default(uuid())
+  hospitalId  String
+  hospital    Hospital   @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  patientId   String
+  patient     Patient    @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  bloodGroup  BloodGroup
+  unitsNeeded Int
+  urgency     String     @default("routine")
+  status      String     @default("pending")
+  notes       String?
+  requestedAt DateTime   @default(now())
+  fulfilledAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([hospitalId])
+  @@index([status])
+  @@map("blood_requests")
+}
+
+// ─── NEW: OXYGEN CYLINDERS ────────────────────────────────────
+
+model OxygenCylinder {
+  id                String         @id @default(uuid())
+  hospitalId        String
+  hospital          Hospital       @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  cylinderCode      String
+  size              CylinderSize   @default(D_TYPE)
+  status            CylinderStatus @default(full)
+  pressureBar       Int?
+  assignedTo        String?
+  assignedPatientId String?
+  lastRefilledAt    DateTime?
+  nextRefillDue     DateTime?
+  supplierName      String?
+  notes             String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  @@unique([hospitalId, cylinderCode])
+  @@index([hospitalId])
+  @@index([status])
+  @@map("oxygen_cylinders")
+}
+
+// ─── NEW: EMERGENCY ───────────────────────────────────────────
+
+model EmergencyCase {
+  id               String          @id @default(uuid())
+  hospitalId       String
+  hospital         Hospital        @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  caseNumber       String
+  patientId        String?
+  patient          Patient?        @relation(fields: [patientId], references: [id], onDelete: SetNull)
+  patientName      String
+  patientAge       Int?
+  patientGender    String?
+  triageLevel      TriageLevel     @default(urgent)
+  chiefComplaint   String
+  vitalsBP         String?
+  vitalsHR         Int?
+  vitalsTemp       Float?
+  vitalsSpO2       Int?
+  vitalsRR         Int?
+  assignedDoctorId String?
+  assignedDoctor   Doctor?         @relation(fields: [assignedDoctorId], references: [id])
+  assignedBedId    String?
+  status           EmergencyStatus @default(waiting)
+  arrivedAt        DateTime        @default(now())
+  treatmentStartAt DateTime?
+  resolvedAt       DateTime?
+  notes            String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([hospitalId])
+  @@index([status])
+  @@index([triageLevel])
+  @@map("emergency_cases")
+}
+
+// ─── NEW: AUDIT LOG (Tier 4) ─────────────────────────────────
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  hospitalId String
+  userId     String
+  action     String
+  model      String
+  recordId   String
+  oldValue   Json?
+  newValue   Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([hospitalId])
+  @@index([userId])
+  @@index([model])
+  @@map("audit_logs")
 }
