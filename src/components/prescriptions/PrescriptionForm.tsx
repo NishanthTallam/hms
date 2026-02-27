@@ -71,7 +71,7 @@ export function PrescriptionForm({ hospitalId }: { hospitalId: string }) {
         });
 
         if (res.ok) {
-            router.push("/prescriptions");
+            router.push("/hospital/prescriptions");
             router.refresh();
         } else {
             const err = await res.json();

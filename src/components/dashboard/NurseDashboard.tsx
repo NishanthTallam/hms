@@ -1,19 +1,39 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPICard } from "@/components/dashboard/KPICard";
-import { Activity, Thermometer, UserCheck, Stethoscope } from "lucide-react";
+import { Activity, Thermometer, UserCheck, Stethoscope, Loader2 } from "lucide-react";
 
 export function NurseDashboard() {
+    const [stats, setStats] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch("/api/dashboard/stats?role=nurse")
+            .then(res => res.json())
+            .then(data => { setStats(data); setLoading(false); })
+            .catch(() => setLoading(false));
+    }, []);
+
+    if (loading) {
+        return (
+            <>
+                <PageHeader title="Nurse Dashboard" />
+                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+            </>
+        );
+    }
+
     return (
         <>
             <PageHeader title="Nurse Dashboard" />
             <div className="p-4 md:p-6 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-                    <KPICard title="Admitted Patients" value={12} subtitle="Currently in beds" icon={UserCheck} color="blue" />
-                    <KPICard title="Vitals Pending" value={5} subtitle="Due in next 2 hours" icon={Activity} color="orange" trend="up" />
-                    <KPICard title="Emergency Triages" value={3} subtitle="Today" icon={Stethoscope} color="red" />
-                    <KPICard title="Critical Patients" value={1} subtitle="Requires monitoring" icon={Thermometer} color="red" />
+                    <KPICard title="Total Beds" value={stats?.total_beds || 0} subtitle="In hospital" icon={UserCheck} color="blue" />
+                    <KPICard title="Occupied Beds" value={stats?.occupied_beds || 0} subtitle="Currently admitted" icon={Activity} color="orange" trend="up" />
+                    <KPICard title="Available Beds" value={stats?.available_beds || 0} subtitle="Ready for patients" icon={Stethoscope} color="green" />
+                    <KPICard title="Maintenance" value={stats?.maintenance_beds || 0} subtitle="Unavailable beds" icon={Thermometer} color="red" />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">

@@ -13,6 +13,7 @@ export default async function HospitalLayout({ children }: { children: React.Rea
             hospitalName={user.hospitalName || "Hospital"}
             userName={user.name}
             userRole={user.role}
+            staffRole={user.staffRole}
         >
             {children}
         </HospitalLayoutClient>

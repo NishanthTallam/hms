@@ -2,8 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { formatDistanceToNow } from "date-fns";
 import { BedStatus } from "@prisma/client";
+import { Search } from "lucide-react";
 
 const BED_COLORS: Record<string, string> = {
     available: "bg-green-100 border-green-400 text-green-800",
@@ -22,6 +26,13 @@ const BED_INDICATOR: Record<string, string> = {
 export function BedMap({ hospitalId }: { hospitalId: string }) {
     const [beds, setBeds] = useState<any[]>([]);
 
+    // Assign patient dialog state
+    const [isAssignOpen, setIsAssignOpen] = useState(false);
+    const [assignBedId, setAssignBedId] = useState<string | null>(null);
+    const [patients, setPatients] = useState<any[]>([]);
+    const [patientSearch, setPatientSearch] = useState("");
+    const [loadingPatients, setLoadingPatients] = useState(false);
+
     const fetchBeds = async () => {
         const res = await fetch("/api/beds");
         if (res.ok) setBeds(await res.json());
@@ -31,15 +42,37 @@ export function BedMap({ hospitalId }: { hospitalId: string }) {
         fetchBeds();
     }, []);
 
+    const openAssignDialog = async (bedId: string) => {
+        setAssignBedId(bedId);
+        setPatientSearch("");
+        setIsAssignOpen(true);
+        setLoadingPatients(true);
+        try {
+            const res = await fetch("/api/patients");
+            if (res.ok) setPatients(await res.json());
+        } catch (e) {
+            console.error("Failed to fetch patients", e);
+        } finally {
+            setLoadingPatients(false);
+        }
+    };
+
+    const handleAssignPatient = async (patientId: string) => {
+        if (!assignBedId) return;
+        await fetch(`/api/beds/${assignBedId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "assign", patientId })
+        });
+        setIsAssignOpen(false);
+        setAssignBedId(null);
+        fetchBeds();
+    };
+
     const handleAction = async (bedId: string, action: string) => {
         if (action === "assign") {
-            const pid = prompt("Enter Patient ID to assign:");
-            if (!pid) return;
-            await fetch(`/api/beds/${bedId}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action, patientId: pid })
-            });
+            openAssignDialog(bedId);
+            return;
         } else if (action === "discharge") {
             if (!confirm("Confirm discharge?")) return;
             await fetch(`/api/beds/${bedId}`, {
@@ -50,6 +83,10 @@ export function BedMap({ hospitalId }: { hospitalId: string }) {
         }
         fetchBeds();
     };
+
+    const filteredPatients = patients.filter(p =>
+        p.name.toLowerCase().includes(patientSearch.toLowerCase())
+    );
 
     // Group beds by Ward
     const groupedBeds = beds.reduce((acc, bed) => {
@@ -77,10 +114,15 @@ export function BedMap({ hospitalId }: { hospitalId: string }) {
                     <div key={wardName} className="bg-white rounded-lg border shadow-sm overflow-hidden">
                         <div className="bg-gray-50 p-4 border-b flex justify-between items-center">
                             <h3 className="font-bold text-lg">{wardName}</h3>
-                            <div className="text-sm font-medium space-x-3">
-                                <span className="text-green-700">Available: {available}</span>
-                                <span className="text-red-700">Occupied: {occupied}</span>
-                                <span className="text-gray-500">Total: {wardBeds.length}</span>
+                            <div className="flex items-center gap-4">
+                                <div className="text-sm font-medium space-x-3 hidden sm:block">
+                                    <span className="text-green-700">Available: {available}</span>
+                                    <span className="text-red-700">Occupied: {occupied}</span>
+                                    <span className="text-gray-500">Total: {wardBeds.length}</span>
+                                </div>
+                                <a href={`/hospital/beds/wards/${wardBeds[0]?.wardId}`} className="text-sm font-semibold text-orange-600 hover:text-orange-700 bg-orange-50 px-3 py-1 rounded-md border border-orange-200">
+                                    View Ward →
+                                </a>
                             </div>
                         </div>
                         <div className="p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -117,6 +159,56 @@ export function BedMap({ hospitalId }: { hospitalId: string }) {
                     </div>
                 );
             })}
+
+            {/* Assign Patient Dialog */}
+            <Dialog open={isAssignOpen} onOpenChange={setIsAssignOpen}>
+                <DialogContent className="max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Assign Patient to Bed</DialogTitle>
+                    </DialogHeader>
+
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <Input
+                            placeholder="Search patient by name..."
+                            value={patientSearch}
+                            onChange={e => setPatientSearch(e.target.value)}
+                            className="pl-9"
+                            autoFocus
+                        />
+                    </div>
+
+                    <div className="max-h-[300px] overflow-y-auto border rounded-lg divide-y">
+                        {loadingPatients ? (
+                            <div className="p-6 text-center text-gray-500">Loading patients...</div>
+                        ) : filteredPatients.length === 0 ? (
+                            <div className="p-6 text-center text-gray-500">
+                                {patientSearch ? "No patients match your search" : "No patients found"}
+                            </div>
+                        ) : (
+                            filteredPatients.map((patient: any) => (
+                                <button
+                                    key={patient.id}
+                                    onClick={() => handleAssignPatient(patient.id)}
+                                    className="w-full text-left px-4 py-3 hover:bg-orange-50 transition-colors flex items-center justify-between group"
+                                >
+                                    <div>
+                                        <div className="font-semibold text-gray-900 group-hover:text-orange-700">{patient.name}</div>
+                                        <div className="text-xs text-gray-500">
+                                            {patient.phone || "No phone"}{patient.gender ? ` • ${patient.gender}` : ""}
+                                        </div>
+                                    </div>
+                                    <span className="text-xs text-orange-600 opacity-0 group-hover:opacity-100 font-medium">Assign →</span>
+                                </button>
+                            ))
+                        )}
+                    </div>
+
+                    <div className="flex justify-end pt-2">
+                        <Button variant="outline" onClick={() => setIsAssignOpen(false)}>Cancel</Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

@@ -1,19 +1,39 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPICard } from "@/components/dashboard/KPICard";
-import { Pill, Activity, AlertTriangle, CheckCircle } from "lucide-react";
+import { Pill, Activity, AlertTriangle, CheckCircle, Loader2 } from "lucide-react";
 
 export function PharmacistDashboard() {
+    const [stats, setStats] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch("/api/dashboard/stats?role=pharmacist")
+            .then(res => res.json())
+            .then(data => { setStats(data); setLoading(false); })
+            .catch(() => setLoading(false));
+    }, []);
+
+    if (loading) {
+        return (
+            <>
+                <PageHeader title="Pharmacist Dashboard" />
+                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+            </>
+        );
+    }
+
     return (
         <>
             <PageHeader title="Pharmacist Dashboard" />
             <div className="p-4 md:p-6 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-                    <KPICard title="Pending Prescriptions" value={14} subtitle="To be dispensed" icon={Activity} color="orange" trend="up" />
-                    <KPICard title="Low Stock Alerts" value={3} subtitle="Items below threshold" icon={AlertTriangle} color="red" />
-                    <KPICard title="Total Medicines" value={210} subtitle="In inventory" icon={Pill} color="blue" />
-                    <KPICard title="Dispensed Today" value={42} subtitle="Prescriptions completed" icon={CheckCircle} color="green" />
+                    <KPICard title="Pending Prescriptions" value={stats?.pending_prescriptions || 0} subtitle="To be dispensed" icon={Activity} color="orange" trend="up" />
+                    <KPICard title="Low Stock Alerts" value={stats?.low_stock_count || 0} subtitle="Items below threshold" icon={AlertTriangle} color="red" />
+                    <KPICard title="Total Medicines" value={stats?.total_medicines || 0} subtitle="In inventory" icon={Pill} color="blue" />
+                    <KPICard title="Dispensed Today" value={stats?.dispensed_today || 0} subtitle="Prescriptions completed" icon={CheckCircle} color="green" />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">

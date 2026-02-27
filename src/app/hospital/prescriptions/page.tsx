@@ -24,7 +24,7 @@ export default async function PrescriptionsPage() {
             <PageHeader
                 title="Prescriptions"
                 action={
-                    <Link href="/prescriptions/new">
+                    <Link href="/hospital/prescriptions/new">
                         <Button>+ Issue Prescription</Button>
                     </Link>
                 }
@@ -53,7 +53,7 @@ export default async function PrescriptionsPage() {
                                     </Badge>
                                 </td>
                                 <td className="p-4">
-                                    <Link href={`/prescriptions/${p.id}`} className="text-blue-600 hover:underline">
+                                    <Link href={`/hospital/prescriptions/${p.id}`} className="text-blue-600 hover:underline">
                                         View
                                     </Link>
                                 </td>

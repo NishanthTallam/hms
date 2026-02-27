@@ -37,20 +37,24 @@ const navItems = [
     { label: "Oxygen", href: "/hospital/oxygen", icon: Wind },
     { label: "Billing", href: "/hospital/billing", icon: Receipt },
     { label: "Pharmacy", href: "/hospital/pharmacy", icon: Pill },
+    { label: "Staff", href: "/hospital/staff", icon: Users },
 ];
 
 interface SidebarProps {
     hospitalName?: string;
     userName?: string;
     userRole?: string;
+    staffRole?: string;
     lowStockCount?: number;
 }
 
-export function Sidebar({ hospitalName = "Hospital", userName = "User", userRole = "staff", lowStockCount = 0 }: SidebarProps) {
+export function Sidebar({ hospitalName = "Hospital", userName = "User", userRole = "staff", staffRole, lowStockCount = 0 }: SidebarProps) {
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
 
     const filteredNavItems = navItems.filter(item => {
+        if (userRole === "admin") return true;
+
         if (userRole === "doctor") {
             const allowedForDoctors = [
                 "/hospital/dashboard",
@@ -62,7 +66,28 @@ export function Sidebar({ hospitalName = "Hospital", userName = "User", userRole
             ];
             return allowedForDoctors.includes(item.href);
         }
-        return true;
+
+        if (userRole === "staff") {
+            let allowedForStaff: string[] = ["/hospital/dashboard"];
+
+            if (staffRole === "receptionist") {
+                allowedForStaff.push("/hospital/patients", "/hospital/appointments", "/hospital/billing");
+            } else if (staffRole === "nurse") {
+                allowedForStaff.push("/hospital/emergency", "/hospital/patients", "/hospital/records", "/hospital/prescriptions", "/hospital/beds");
+            } else if (staffRole === "pharmacist") {
+                allowedForStaff.push("/hospital/pharmacy", "/hospital/prescriptions");
+            } else if (staffRole === "lab_technician") {
+                allowedForStaff.push("/hospital/records");
+            } else if (staffRole === "ward_boy") {
+                allowedForStaff.push("/hospital/beds");
+            } else if (staffRole === "accountant") {
+                allowedForStaff.push("/hospital/billing");
+            }
+
+            return allowedForStaff.includes(item.href);
+        }
+
+        return false;
     });
 
     const sidebarContent = (

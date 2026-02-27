@@ -1,19 +1,39 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { KPICard } from "@/components/dashboard/KPICard";
-import { Users, CalendarClock, Ticket, CheckSquare } from "lucide-react";
+import { Users, CalendarClock, Ticket, CheckSquare, Loader2 } from "lucide-react";
 
 export function ReceptionistDashboard() {
+    const [stats, setStats] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch("/api/dashboard/stats?role=receptionist")
+            .then(res => res.json())
+            .then(data => { setStats(data); setLoading(false); })
+            .catch(() => setLoading(false));
+    }, []);
+
+    if (loading) {
+        return (
+            <>
+                <PageHeader title="Receptionist Dashboard" />
+                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+            </>
+        );
+    }
+
     return (
         <>
             <PageHeader title="Receptionist Dashboard" />
             <div className="p-4 md:p-6 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-                    <KPICard title="Pending Queue" value={8} subtitle="Waiting in lobby" icon={Users} color="orange" trend="up" />
-                    <KPICard title="Appointments Today" value={24} subtitle="Scheduled" icon={CalendarClock} color="blue" />
-                    <KPICard title="Tokens Issued" value={15} subtitle="Since morning" icon={Ticket} color="blue" />
-                    <KPICard title="Completed Check-ins" value={12} subtitle="Today" icon={CheckSquare} color="green" />
+                    <KPICard title="Patients Today" value={stats?.patients_today || 0} subtitle="New registrations" icon={Users} color="orange" trend="up" />
+                    <KPICard title="Appointments Today" value={stats?.appointments_today || 0} subtitle="Scheduled" icon={CalendarClock} color="blue" />
+                    <KPICard title="Total Patients" value={stats?.total_patients || 0} subtitle="In system" icon={Users} color="blue" />
+                    <KPICard title="Pending Invoices" value={stats?.pending_bills || 0} subtitle="To be collected" icon={CheckSquare} color="green" />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">

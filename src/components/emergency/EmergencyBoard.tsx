@@ -17,7 +17,8 @@ const triageConfig: Record<TriageLevel, { color: string, label: string }> = {
 
 export function EmergencyBoard({ hospitalId }: { hospitalId: string }) {
     const [cases, setCases] = useState<any[]>([]);
-    const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+    const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+    const [mounted, setMounted] = useState(false);
     const router = useRouter();
 
     const fetchCases = async () => {
@@ -29,6 +30,7 @@ export function EmergencyBoard({ hospitalId }: { hospitalId: string }) {
     };
 
     useEffect(() => {
+        setMounted(true);
         fetchCases();
         const interval = setInterval(fetchCases, 30000); // 30s auto-refresh
         return () => clearInterval(interval);
@@ -45,7 +47,7 @@ export function EmergencyBoard({ hospitalId }: { hospitalId: string }) {
         <div className="h-full flex flex-col">
             <div className="flex justify-between items-center mb-4 text-sm text-gray-500">
                 <span>Auto-refreshing every 30s</span>
-                <span>Last updated: {lastUpdated.toLocaleTimeString()}</span>
+                <span>Last updated: {mounted && lastUpdated ? lastUpdated.toLocaleTimeString() : "..."}</span>
             </div>
 
             <div className="flex-1 overflow-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 pb-10">
@@ -79,7 +81,7 @@ export function EmergencyBoard({ hospitalId }: { hospitalId: string }) {
                                                 {c.status.replace("_", " ")}
                                             </Badge>
                                             <span className="text-xs text-red-600 font-bold">
-                                                ⏱ {Math.max(0, differenceInMinutes(new Date(), new Date(c.arrivedAt)))} min
+                                                ⏱ {mounted ? Math.max(0, differenceInMinutes(new Date(), new Date(c.arrivedAt))) : 0} min
                                             </span>
                                         </div>
                                     </div>

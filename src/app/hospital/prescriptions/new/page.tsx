@@ -8,7 +8,7 @@ export default async function NewPrescriptionPage() {
 
     return (
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-            <PageHeader title="New Prescription" backHref="/prescriptions" />
+            <PageHeader title="New Prescription" backHref="/hospital/prescriptions" />
             <PrescriptionForm hospitalId={hospitalId} />
         </div>
     );
