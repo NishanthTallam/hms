@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 
 const TRIAGE_LEVELS = [
     { value: "critical", label: "🔴 CRITICAL", color: "bg-red-50 hover:bg-red-100 border-red-500 text-red-700" },
-    { value: "urgent", label: "🟠 URGENT", color: "bg-orange-50 hover:bg-orange-100 border-orange-500 text-orange-700" },
+    { value: "urgent", label: "🟠 URGENT", color: "bg-blue-50 hover:bg-blue-100 border-orange-400 text-blue-700" },
     { value: "semi_urgent", label: "🟡 SEMI-URGENT", color: "bg-yellow-50 hover:bg-yellow-100 border-yellow-500 text-yellow-700" },
     { value: "non_urgent", label: "🟢 NON-URGENT", color: "bg-green-50 hover:bg-green-100 border-green-500 text-green-700" }
 ];
@@ -52,7 +52,7 @@ export function FastIntakeForm({ hospitalId }: { hospitalId: string }) {
         });
 
         if (res.ok) {
-            router.push("/emergency");
+            router.push("/hospital/emergency");
             router.refresh();
         } else {
             const err = await res.json();

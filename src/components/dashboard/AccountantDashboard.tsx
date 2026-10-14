@@ -21,7 +21,7 @@ export function AccountantDashboard() {
         return (
             <>
                 <PageHeader title="Accounts & Billing Dashboard" />
-                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div>
             </>
         );
     }

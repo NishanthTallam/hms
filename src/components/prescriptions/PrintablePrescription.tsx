@@ -38,11 +38,11 @@ export function PrintablePrescription({
     items,
 }: PrintablePrescriptionProps) {
     return (
-        <div className="max-w-lg mx-auto bg-white p-8 print:shadow-none text-black selection:bg-orange-100">
+        <div className="max-w-lg mx-auto bg-white p-8 print:shadow-none text-black selection:bg-blue-100">
             {/* Hospital letterhead */}
             <div className="flex justify-between border-b-2 border-gray-800 pb-3 mb-4">
                 <div>
-                    <h1 className="text-xl font-bold text-orange-500">{hospital.name}</h1>
+                    <h1 className="text-xl font-bold text-[#1A56DB]">{hospital.name}</h1>
                     {hospital.address && <p className="text-xs text-gray-500">{hospital.address}</p>}
                     {hospital.phone && <p className="text-xs text-gray-500">{hospital.phone}</p>}
                 </div>

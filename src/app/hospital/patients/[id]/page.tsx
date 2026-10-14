@@ -15,7 +15,7 @@ export default function PatientProfilePage() {
 
     useEffect(() => { fetch(`/api/patients/${id}`).then(r => r.json()).then(d => { setPatient(d); setLoading(false); }).catch(() => setLoading(false)); }, [id]);
 
-    if (loading) return <><PageHeader title="Patient Profile" backHref="/hospital/patients" /><div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div></>;
+    if (loading) return <><PageHeader title="Patient Profile" backHref="/hospital/patients" /><div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div></>;
     if (!patient) return <><PageHeader title="Patient Not Found" backHref="/hospital/patients" /><div className="p-6 text-center text-gray-500">Patient not found</div></>;
 
     return (
@@ -24,7 +24,7 @@ export default function PatientProfilePage() {
             <div className="p-4 md:p-6 space-y-6">
                 <div className="bg-white rounded-xl border p-6">
                     <div className="flex items-start gap-4">
-                        <div className="h-14 w-14 rounded-full bg-orange-100 flex items-center justify-center shrink-0"><User className="h-7 w-7 text-orange-600" /></div>
+                        <div className="h-14 w-14 rounded-full bg-blue-100 flex items-center justify-center shrink-0"><User className="h-7 w-7 text-[#1A56DB]" /></div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 flex-1">
                             <div><p className="text-xs text-gray-500 uppercase">Phone</p><p className="text-sm font-medium">{patient.phone}</p></div>
                             <div><p className="text-xs text-gray-500 uppercase">Gender</p><p className="text-sm font-medium capitalize">{patient.gender || "—"}</p></div>

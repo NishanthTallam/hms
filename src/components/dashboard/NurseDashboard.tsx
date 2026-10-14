@@ -20,7 +20,7 @@ export function NurseDashboard() {
         return (
             <>
                 <PageHeader title="Nurse Dashboard" />
-                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div>
             </>
         );
     }
@@ -31,7 +31,7 @@ export function NurseDashboard() {
             <div className="p-4 md:p-6 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
                     <KPICard title="Total Beds" value={stats?.total_beds || 0} subtitle="In hospital" icon={UserCheck} color="blue" />
-                    <KPICard title="Occupied Beds" value={stats?.occupied_beds || 0} subtitle="Currently admitted" icon={Activity} color="orange" trend="up" />
+                    <KPICard title="Occupied Beds" value={stats?.occupied_beds || 0} subtitle="Currently admitted" icon={Activity} color="amber" trend="up" />
                     <KPICard title="Available Beds" value={stats?.available_beds || 0} subtitle="Ready for patients" icon={Stethoscope} color="green" />
                     <KPICard title="Maintenance" value={stats?.maintenance_beds || 0} subtitle="Unavailable beds" icon={Thermometer} color="red" />
                 </div>
@@ -54,7 +54,7 @@ export function NurseDashboard() {
                                     {/* Mock Data */}
                                     <tr className="hover:bg-gray-50">
                                         <td className="py-3 px-4">John Doe<br /><span className="text-xs text-gray-500">ICU-01</span></td>
-                                        <td className="py-3 px-4 text-orange-600 font-medium">4 hours ago</td>
+                                        <td className="py-3 px-4 text-[#1A56DB] font-medium">4 hours ago</td>
                                         <td className="py-3 px-4">88 bpm</td>
                                         <td className="py-3 px-4">120/80</td>
                                         <td className="py-3 px-4">

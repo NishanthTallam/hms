@@ -39,7 +39,7 @@ export default function NewMedicinePage() {
                         <div><Label>Purchase Price (₹)</Label><Input type="number" min={0} step="0.01" value={form.purchasePrice} onChange={e => setForm({ ...form, purchasePrice: e.target.value })} /></div>
                         <div><Label>Selling Price (₹)</Label><Input type="number" min={0} step="0.01" value={form.sellingPrice} onChange={e => setForm({ ...form, sellingPrice: e.target.value })} /></div>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-3 pt-2"><Button type="submit" className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600" disabled={loading}>{loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Adding...</> : "Add Medicine"}</Button><Button type="button" variant="outline" className="w-full sm:w-auto" onClick={() => router.back()}>Cancel</Button></div>
+                    <div className="flex flex-col sm:flex-row gap-3 pt-2"><Button type="submit" className="w-full sm:w-auto bg-[#1A56DB] hover:bg-[#1E40AF]" disabled={loading}>{loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Adding...</> : "Add Medicine"}</Button><Button type="button" variant="outline" className="w-full sm:w-auto" onClick={() => router.back()}>Cancel</Button></div>
                 </form>
             </div></div></>
     );

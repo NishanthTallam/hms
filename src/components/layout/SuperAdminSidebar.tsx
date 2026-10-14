@@ -26,7 +26,7 @@ export function SuperAdminSidebar() {
     const sidebarContent = (
         <>
             <div className="flex items-center gap-3 px-4 py-5 border-b border-gray-200">
-                <div className="h-9 w-9 rounded-lg bg-orange-500 flex items-center justify-center">
+                <div className="h-9 w-9 rounded-lg bg-[#1A56DB] flex items-center justify-center">
                     <ShieldCheck className="h-5 w-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -49,11 +49,11 @@ export function SuperAdminSidebar() {
                             className={cn(
                                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                                 isActive
-                                    ? "bg-orange-50 text-orange-600"
+                                    ? "bg-blue-50 text-[#1A56DB]"
                                     : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                             )}
                         >
-                            <item.icon className={cn("h-5 w-5 shrink-0", isActive ? "text-orange-500" : "text-gray-400")} />
+                            <item.icon className={cn("h-5 w-5 shrink-0", isActive ? "text-[#1A56DB]" : "text-gray-400")} />
                             <span>{item.label}</span>
                         </Link>
                     );
@@ -62,8 +62,8 @@ export function SuperAdminSidebar() {
 
             <div className="border-t border-gray-200 px-4 py-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center">
-                        <ShieldCheck className="h-4 w-4 text-orange-600" />
+                    <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                        <ShieldCheck className="h-4 w-4 text-[#1A56DB]" />
                     </div>
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900">Super Admin</p>

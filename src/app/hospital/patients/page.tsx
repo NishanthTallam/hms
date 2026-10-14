@@ -29,11 +29,11 @@ export default function PatientsPage() {
 
     return (
         <>
-            <PageHeader title="Patients" action={<Link href="/hospital/patients/new"><Button className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white"><Plus className="h-4 w-4 mr-2" />Register Patient</Button></Link>} />
+            <PageHeader title="Patients" action={<Link href="/hospital/patients/new"><Button className="w-full sm:w-auto bg-[#1A56DB] hover:bg-[#1E40AF] text-white"><Plus className="h-4 w-4 mr-2" />Register Patient</Button></Link>} />
             <div className="p-4 md:p-6">
                 <div className="mb-4 flex justify-end"><div className="relative w-full sm:w-72"><Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" /><Input placeholder="Search by name or phone..." value={search} onChange={e => setSearch(e.target.value)} className="pl-10" /></div></div>
-                {loading ? <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
-                    : filtered.length === 0 ? <EmptyState icon={<Users className="h-12 w-12" />} title={search ? "No matching patients" : "No patients registered yet"} description={search ? "Try a different search term" : "Register your first patient"} action={!search && <Link href="/hospital/patients/new"><Button className="bg-orange-500 hover:bg-orange-600 text-white">Register Patient</Button></Link>} />
+                {loading ? <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div>
+                    : filtered.length === 0 ? <EmptyState icon={<Users className="h-12 w-12" />} title={search ? "No matching patients" : "No patients registered yet"} description={search ? "Try a different search term" : "Register your first patient"} action={!search && <Link href="/hospital/patients/new"><Button className="bg-[#1A56DB] hover:bg-[#1E40AF] text-white">Register Patient</Button></Link>} />
                         : (
                             <div className="bg-white rounded-xl border overflow-hidden"><div className="overflow-x-auto"><table className="min-w-[640px] w-full text-sm">
                                 <thead><tr className="border-b bg-gray-50">

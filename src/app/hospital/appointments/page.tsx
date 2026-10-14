@@ -20,10 +20,10 @@ export default function AppointmentsPage() {
 
     return (
         <>
-            <PageHeader title="Appointments" action={<Link href="/hospital/appointments/new"><Button className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white"><Plus className="h-4 w-4 mr-2" />Book Appointment</Button></Link>} />
+            <PageHeader title="Appointments" action={<Link href="/hospital/appointments/new"><Button className="w-full sm:w-auto bg-[#1A56DB] hover:bg-[#1E40AF] text-white"><Plus className="h-4 w-4 mr-2" />Book Appointment</Button></Link>} />
             <div className="p-4 md:p-6">
                 <div className="mb-4 flex justify-end"><Select value={statusFilter} onValueChange={setStatusFilter}><SelectTrigger className="w-[180px]"><SelectValue placeholder="Filter" /></SelectTrigger><SelectContent><SelectItem value="all">All Status</SelectItem><SelectItem value="scheduled">Scheduled</SelectItem><SelectItem value="completed">Completed</SelectItem><SelectItem value="cancelled">Cancelled</SelectItem></SelectContent></Select></div>
-                {loading ? <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+                {loading ? <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div>
                     : appointments.length === 0 ? <EmptyState icon={<CalendarDays className="h-12 w-12" />} title="No appointments" description="Book your first appointment" />
                         : <div className="bg-white rounded-xl border overflow-hidden"><div className="overflow-x-auto"><table className="min-w-[700px] w-full text-sm">
                             <thead><tr className="border-b bg-gray-50"><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Date & Time</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Patient</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Doctor</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Type</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Status</th><th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Actions</th></tr></thead>

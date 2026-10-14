@@ -152,7 +152,7 @@ export function StaffForm() {
 
             <div className="flex justify-end gap-3 pt-4 border-t">
                 <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
-                <Button type="submit" disabled={loading} className="bg-orange-500 hover:bg-orange-600 text-white min-w-[140px]">
+                <Button type="submit" disabled={loading} className="bg-[#1A56DB] hover:bg-[#1E40AF] text-white min-w-[140px]">
                     {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     {loading ? "Creating..." : "Create Staff Account"}
                 </Button>

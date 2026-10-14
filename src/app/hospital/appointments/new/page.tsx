@@ -27,7 +27,7 @@ export default function NewAppointmentPage() {
                     <div><Label>Date & Time *</Label><Input type="datetime-local" value={form.appointmentDate} onChange={e => setForm({ ...form, appointmentDate: e.target.value })} required /></div>
                     <div><Label>Type</Label><Select value={form.type} onValueChange={v => setForm({ ...form, type: v })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="OP">OP (Outpatient)</SelectItem><SelectItem value="IP">IP (Inpatient)</SelectItem></SelectContent></Select></div>
                     <div><Label>Notes</Label><Textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} rows={3} placeholder="Reason for visit..." /></div>
-                    <div className="flex flex-col sm:flex-row gap-3"><Button type="submit" className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600" disabled={loading}>{loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Booking...</> : "Book Appointment"}</Button><Button type="button" variant="outline" className="w-full sm:w-auto" onClick={() => router.back()}>Cancel</Button></div>
+                    <div className="flex flex-col sm:flex-row gap-3"><Button type="submit" className="w-full sm:w-auto bg-[#1A56DB] hover:bg-[#1E40AF]" disabled={loading}>{loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Booking...</> : "Book Appointment"}</Button><Button type="button" variant="outline" className="w-full sm:w-auto" onClick={() => router.back()}>Cancel</Button></div>
                 </form>
             </div></div></>
     );

@@ -48,7 +48,7 @@ export function WardsList({ hospitalId, isAdmin }: { hospitalId: string, isAdmin
                     <p className="text-sm text-gray-500">Manage wards, floors, and bed capacities</p>
                 </div>
                 {isAdmin && (
-                    <Button onClick={() => setIsCreateOpen(true)} className="bg-orange-500 hover:bg-orange-600 text-white">
+                    <Button onClick={() => setIsCreateOpen(true)} className="bg-[#1A56DB] hover:bg-[#1E40AF] text-white">
                         + Add Ward
                     </Button>
                 )}
@@ -62,8 +62,8 @@ export function WardsList({ hospitalId, isAdmin }: { hospitalId: string, isAdmin
                                 <h3 className="font-bold text-lg text-gray-900">{ward.name}</h3>
                                 <p className="text-sm text-gray-500">Floor {ward.floor || "N/A"}</p>
                             </div>
-                            <div className="h-10 w-10 bg-orange-50 rounded-full flex items-center justify-center">
-                                <span className="text-orange-600 font-bold">{ward._count?.beds || 0}</span>
+                            <div className="h-10 w-10 bg-blue-50 rounded-full flex items-center justify-center">
+                                <span className="text-[#1A56DB] font-bold">{ward._count?.beds || 0}</span>
                             </div>
                         </div>
 
@@ -95,7 +95,7 @@ export function WardsList({ hospitalId, isAdmin }: { hospitalId: string, isAdmin
                         <h3 className="text-lg font-semibold text-gray-900 mb-1">No Wards Set Up</h3>
                         <p className="text-sm text-gray-500 mb-4 max-w-sm">You haven't added any wards to your hospital yet. Create your first ward to start managing beds.</p>
                         {isAdmin && (
-                            <Button onClick={() => setIsCreateOpen(true)} className="bg-orange-500 hover:bg-orange-600 text-white">
+                            <Button onClick={() => setIsCreateOpen(true)} className="bg-[#1A56DB] hover:bg-[#1E40AF] text-white">
                                 Create Your First Ward
                             </Button>
                         )}
@@ -132,7 +132,7 @@ export function WardsList({ hospitalId, isAdmin }: { hospitalId: string, isAdmin
                         </div>
                         <div className="flex justify-end gap-3 pt-4">
                             <Button type="button" variant="outline" onClick={() => setIsCreateOpen(false)}>Cancel</Button>
-                            <Button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white">Create Ward</Button>
+                            <Button type="submit" className="bg-[#1A56DB] hover:bg-[#1E40AF] text-white">Create Ward</Button>
                         </div>
                     </form>
                 </DialogContent>

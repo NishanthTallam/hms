@@ -14,9 +14,9 @@ export default function RecordsPage() {
     useEffect(() => { fetch("/api/records").then(r => r.json()).then(d => { setRecords(d); setLoading(false); }).catch(() => setLoading(false)); }, []);
 
     return (
-        <><PageHeader title="Medical Records" action={<Link href="/hospital/records/new"><Button className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white"><Plus className="h-4 w-4 mr-2" />New Record</Button></Link>} />
+        <><PageHeader title="Medical Records" action={<Link href="/hospital/records/new"><Button className="w-full sm:w-auto bg-[#1A56DB] hover:bg-[#1E40AF] text-white"><Plus className="h-4 w-4 mr-2" />New Record</Button></Link>} />
             <div className="p-4 md:p-6">
-                {loading ? <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+                {loading ? <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div>
                     : records.length === 0 ? <EmptyState icon={<ClipboardList className="h-12 w-12" />} title="No medical records" description="Create your first medical record" />
                         : <div className="bg-white rounded-xl border overflow-hidden"><div className="overflow-x-auto"><table className="min-w-[640px] w-full text-sm">
                             <thead><tr className="border-b bg-gray-50"><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Date</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Patient</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Doctor</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Type</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Diagnosis</th></tr></thead>

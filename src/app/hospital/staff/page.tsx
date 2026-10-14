@@ -15,7 +15,7 @@ export default async function StaffPage() {
                 title="👥 Staff Management"
                 action={
                     <Link href="/hospital/staff/new">
-                        <Button className="bg-orange-500 hover:bg-orange-600 text-white flex items-center gap-2">
+                        <Button className="bg-[#1A56DB] hover:bg-[#1E40AF] text-white flex items-center gap-2">
                             <UserPlus className="h-4 w-4" /> Add Staff Member
                         </Button>
                     </Link>

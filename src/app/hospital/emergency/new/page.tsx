@@ -8,7 +8,7 @@ export default async function NewEmergencyCasePage() {
 
     return (
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-            <PageHeader title="New Emergency Case" backHref="/emergency" />
+            <PageHeader title="New Emergency Case" backHref="/hospital/emergency" />
             <FastIntakeForm hospitalId={hospitalId} />
         </div>
     );

@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { KPICard } from "@/components/dashboard/KPICard";
-import { PageHeader } from "@/components/layout/PageHeader";
-import { Users, CalendarDays, Receipt, Pill, Loader2 } from "lucide-react";
+import { TodaySchedule } from "@/components/dashboard/TodaySchedule";
+import { QueueStatusCard } from "@/components/dashboard/QueueStatusCard";
+import { PatientStatusChart } from "@/components/dashboard/PatientStatusChart";
+import { PatientSplitCard } from "@/components/dashboard/PatientSplitCard";
+import { Users, CalendarDays, Stethoscope, Bed, Loader2 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
 interface DashboardStats {
@@ -16,6 +19,7 @@ interface DashboardStats {
     low_stock_count: number;
     expiring_soon_count: number;
     revenue_this_month: number;
+    available_beds?: number;
 }
 
 export function AdminDashboard() {
@@ -23,51 +27,97 @@ export function AdminDashboard() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("/api/dashboard/stats")
-            .then(res => res.json())
-            .then(data => { setStats(data); setLoading(false); })
+        Promise.all([
+            fetch("/api/dashboard/stats?role=admin").then(r => r.json()),
+            fetch("/api/dashboard/stats?role=ward_boy").then(r => r.json()),
+        ])
+            .then(([adminStats, bedStats]) => {
+                setStats({ ...adminStats, available_beds: bedStats.available_beds || 0 });
+                setLoading(false);
+            })
             .catch(() => setLoading(false));
     }, []);
 
     if (loading) {
         return (
-            <>
-                <PageHeader title="Dashboard" />
-                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
-            </>
+            <div className="p-6">
+                <div className="flex justify-center py-16">
+                    <Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" />
+                </div>
+            </div>
         );
     }
 
+    const today = new Date();
+    const greeting = today.getHours() < 12 ? "Good morning" : today.getHours() < 17 ? "Good afternoon" : "Good evening";
+
     return (
-        <>
-            <PageHeader title="Dashboard" />
-            <div className="p-4 md:p-6 space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-                    <KPICard title="Total Patients" value={stats?.total_patients || 0} subtitle={`+${stats?.patients_today || 0} today`} icon={Users} color="orange" trend={stats?.patients_today ? "up" : "neutral"} />
-                    <KPICard title="Today's Appointments" value={stats?.appointments_today || 0} subtitle={`${stats?.appointments_scheduled || 0} scheduled total`} icon={CalendarDays} color="blue" />
-                    <KPICard title="Pending Bills" value={formatCurrency(stats?.pending_amount || 0)} subtitle={`${stats?.pending_bills || 0} invoices`} icon={Receipt} color="amber" />
-                    <KPICard title="Low Stock Items" value={stats?.low_stock_count || 0} subtitle={`${stats?.expiring_soon_count || 0} expiring soon`} icon={Pill} color={stats?.low_stock_count ? "red" : "green"} />
+        <div className="p-6 space-y-6 page-enter">
+            {/* Welcome row */}
+            <div>
+                <h1 className="text-[22px] font-bold text-gray-900" style={{ fontFamily: "var(--font-heading)" }}>
+                    {greeting} 👋
+                </h1>
+                <p className="text-sm text-gray-400 mt-0.5">
+                    {today.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
+                </p>
+            </div>
+
+            {/* KPI Cards row */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <KPICard
+                    title="Today's Appointments"
+                    value={stats?.appointments_today || 0}
+                    subtitle={`${stats?.appointments_scheduled || 0} scheduled total`}
+                    icon={CalendarDays}
+                    color="blue"
+                    trend={stats?.appointments_today ? "up" : "neutral"}
+                />
+                <KPICard
+                    title="Total Patients"
+                    value={stats?.total_patients || 0}
+                    subtitle={`+${stats?.patients_today || 0} today`}
+                    icon={Users}
+                    color="green"
+                    trend={stats?.patients_today ? "up" : "neutral"}
+                />
+                <KPICard
+                    title="Revenue This Month"
+                    value={formatCurrency(stats?.revenue_this_month || 0)}
+                    subtitle={`${stats?.pending_bills || 0} pending bills`}
+                    icon={Stethoscope}
+                    color="purple"
+                    trend="up"
+                />
+                <KPICard
+                    title="Available Beds"
+                    value={stats?.available_beds || 0}
+                    subtitle={`${stats?.low_stock_count || 0} low stock items`}
+                    icon={Bed}
+                    color="amber"
+                    trend="neutral"
+                />
+            </div>
+
+            {/* Middle row — Schedule + Queue */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                <div className="lg:col-span-3">
+                    <TodaySchedule />
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="bg-white rounded-xl border p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">Quick Stats</h3>
-                        <div className="space-y-3">
-                            <div className="flex justify-between items-center py-2 border-b"><span className="text-sm text-gray-600">Revenue This Month</span><span className="text-sm font-semibold text-gray-900">{formatCurrency(stats?.revenue_this_month || 0)}</span></div>
-                            <div className="flex justify-between items-center py-2 border-b"><span className="text-sm text-gray-600">Total Scheduled</span><span className="text-sm font-semibold text-gray-900">{stats?.appointments_scheduled || 0}</span></div>
-                            <div className="flex justify-between items-center py-2"><span className="text-sm text-gray-600">Low Stock Medicines</span><span className="text-sm font-semibold text-red-600">{stats?.low_stock_count || 0}</span></div>
-                        </div>
-                    </div>
-                    <div className="bg-white rounded-xl border p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">Quick Navigation</h3>
-                        <div className="mt-4 grid grid-cols-2 gap-3">
-                            <a href="/hospital/patients" className="flex items-center gap-2 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"><Users className="h-4 w-4 text-orange-500" />Patients</a>
-                            <a href="/hospital/appointments" className="flex items-center gap-2 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"><CalendarDays className="h-4 w-4 text-blue-500" />Appointments</a>
-                            <a href="/hospital/billing" className="flex items-center gap-2 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"><Receipt className="h-4 w-4 text-amber-500" />Billing</a>
-                            <a href="/hospital/pharmacy" className="flex items-center gap-2 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"><Pill className="h-4 w-4 text-green-500" />Pharmacy</a>
-                        </div>
-                    </div>
+                <div className="lg:col-span-2">
+                    <QueueStatusCard />
                 </div>
             </div>
-        </>
+
+            {/* Bottom row — Chart + Patient split */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                <div className="lg:col-span-3">
+                    <PatientStatusChart />
+                </div>
+                <div className="lg:col-span-2">
+                    <PatientSplitCard />
+                </div>
+            </div>
+        </div>
     );
 }

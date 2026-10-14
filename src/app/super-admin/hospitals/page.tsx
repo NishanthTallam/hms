@@ -73,7 +73,7 @@ export default function HospitalsPage() {
                 action={
                     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                         <DialogTrigger asChild>
-                            <Button className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white">
+                            <Button className="w-full sm:w-auto bg-[#1A56DB] hover:bg-[#1E40AF] text-white">
                                 <Plus className="h-4 w-4 mr-2" /> Create Hospital
                             </Button>
                         </DialogTrigger>
@@ -101,7 +101,7 @@ export default function HospitalsPage() {
                                 </div>
                                 <div><Label>Admin Password *</Label><Input type="password" value={form.admin_password} onChange={e => setForm({ ...form, admin_password: e.target.value })} required minLength={8} /></div>
 
-                                <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600" disabled={creating}>
+                                <Button type="submit" className="w-full bg-[#1A56DB] hover:bg-[#1E40AF]" disabled={creating}>
                                     {creating ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Creating...</> : "Create Hospital"}
                                 </Button>
                             </form>
@@ -111,7 +111,7 @@ export default function HospitalsPage() {
             />
             <div className="p-4 md:p-6">
                 {loading ? (
-                    <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+                    <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div>
                 ) : hospitals.length === 0 ? (
                     <EmptyState icon={<Building2 className="h-12 w-12" />} title="No hospitals yet" description="Create your first hospital to get started" />
                 ) : (

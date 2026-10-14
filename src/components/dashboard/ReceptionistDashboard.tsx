@@ -20,7 +20,7 @@ export function ReceptionistDashboard() {
         return (
             <>
                 <PageHeader title="Receptionist Dashboard" />
-                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div>
             </>
         );
     }
@@ -30,7 +30,7 @@ export function ReceptionistDashboard() {
             <PageHeader title="Receptionist Dashboard" />
             <div className="p-4 md:p-6 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-                    <KPICard title="Patients Today" value={stats?.patients_today || 0} subtitle="New registrations" icon={Users} color="orange" trend="up" />
+                    <KPICard title="Patients Today" value={stats?.patients_today || 0} subtitle="New registrations" icon={Users} color="amber" trend="up" />
                     <KPICard title="Appointments Today" value={stats?.appointments_today || 0} subtitle="Scheduled" icon={CalendarClock} color="blue" />
                     <KPICard title="Total Patients" value={stats?.total_patients || 0} subtitle="In system" icon={Users} color="blue" />
                     <KPICard title="Pending Invoices" value={stats?.pending_bills || 0} subtitle="To be collected" icon={CheckSquare} color="green" />
@@ -61,7 +61,7 @@ export function ReceptionistDashboard() {
                                         <td className="py-3 px-4 font-mono font-bold text-purple-700">T-016</td>
                                         <td className="py-3 px-4 font-medium">Michael Brown</td>
                                         <td className="py-3 px-4 text-gray-600">Dr. Smith</td>
-                                        <td className="py-3 px-4"><span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">Waiting</span></td>
+                                        <td className="py-3 px-4"><span className="bg-blue-100 text-amber-700 text-xs px-2 py-1 rounded-full">Waiting</span></td>
                                         <td className="py-3 px-4 space-x-2">
                                             <button className="text-green-600 font-medium hover:underline text-xs bg-green-50 px-2 py-1 rounded">Call In</button>
                                         </td>
@@ -70,7 +70,7 @@ export function ReceptionistDashboard() {
                                         <td className="py-3 px-4 font-mono font-bold text-purple-700">T-017</td>
                                         <td className="py-3 px-4 font-medium">Sarah Connor</td>
                                         <td className="py-3 px-4 text-gray-600">Dr. Adams</td>
-                                        <td className="py-3 px-4"><span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">Waiting</span></td>
+                                        <td className="py-3 px-4"><span className="bg-blue-100 text-amber-700 text-xs px-2 py-1 rounded-full">Waiting</span></td>
                                         <td className="py-3 px-4 space-x-2">
                                             <button className="text-green-600 font-medium hover:underline text-xs bg-green-50 px-2 py-1 rounded">Call In</button>
                                         </td>
@@ -83,8 +83,8 @@ export function ReceptionistDashboard() {
                     <div className="bg-white rounded-xl border p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
                         <div className="space-y-3">
-                            <a href="/hospital/patients/new" className="block p-3 rounded-lg border hover:border-orange-500 hover:bg-orange-50 transition-colors">
-                                <div className="font-medium text-orange-800">Register Patient</div>
+                            <a href="/hospital/patients/new" className="block p-3 rounded-lg border hover:border-[#1A56DB] hover:bg-blue-50 transition-colors">
+                                <div className="font-medium text-amber-700">Register Patient</div>
                                 <div className="text-xs text-gray-500">Create new patient record</div>
                             </a>
                             <a href="/hospital/appointments" className="block p-3 rounded-lg border hover:border-blue-500 hover:bg-blue-50 transition-colors">

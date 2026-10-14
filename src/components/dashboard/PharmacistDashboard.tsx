@@ -20,7 +20,7 @@ export function PharmacistDashboard() {
         return (
             <>
                 <PageHeader title="Pharmacist Dashboard" />
-                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div>
             </>
         );
     }
@@ -30,7 +30,7 @@ export function PharmacistDashboard() {
             <PageHeader title="Pharmacist Dashboard" />
             <div className="p-4 md:p-6 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-                    <KPICard title="Pending Prescriptions" value={stats?.pending_prescriptions || 0} subtitle="To be dispensed" icon={Activity} color="orange" trend="up" />
+                    <KPICard title="Pending Prescriptions" value={stats?.pending_prescriptions || 0} subtitle="To be dispensed" icon={Activity} color="amber" trend="up" />
                     <KPICard title="Low Stock Alerts" value={stats?.low_stock_count || 0} subtitle="Items below threshold" icon={AlertTriangle} color="red" />
                     <KPICard title="Total Medicines" value={stats?.total_medicines || 0} subtitle="In inventory" icon={Pill} color="blue" />
                     <KPICard title="Dispensed Today" value={stats?.dispensed_today || 0} subtitle="Prescriptions completed" icon={CheckCircle} color="green" />
@@ -90,10 +90,10 @@ export function PharmacistDashboard() {
                                 </div>
                                 <button className="text-xs font-semibold bg-white text-gray-700 px-2 py-1 rounded border shadow-sm hover:bg-gray-50">Order</button>
                             </div>
-                            <div className="flex justify-between items-center p-3 rounded-lg border border-orange-100 bg-orange-50">
+                            <div className="flex justify-between items-center p-3 rounded-lg border border-amber-100 bg-blue-50">
                                 <div>
                                     <div className="font-bold text-gray-900">Amoxicillin 250mg</div>
-                                    <div className="text-xs text-orange-600 font-medium">Low stock (24 left)</div>
+                                    <div className="text-xs text-[#1A56DB] font-medium">Low stock (24 left)</div>
                                 </div>
                                 <button className="text-xs font-semibold bg-white text-gray-700 px-2 py-1 rounded border shadow-sm hover:bg-gray-50">Order</button>
                             </div>

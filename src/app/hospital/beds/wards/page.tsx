@@ -17,7 +17,7 @@ export default async function WardsPage() {
                 action={
                     userRole === "admin" ? (
                         <Link href="/hospital/beds/wards">
-                            <Button className="bg-orange-500 hover:bg-orange-600 text-white">
+                            <Button className="bg-[#1A56DB] hover:bg-[#1E40AF] text-white">
                                 + Create Ward
                             </Button>
                         </Link>

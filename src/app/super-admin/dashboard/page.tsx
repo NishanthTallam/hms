@@ -24,7 +24,7 @@ export default async function SuperAdminDashboard() {
             <PageHeader title="System Dashboard" />
             <div className="p-4 md:p-6 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-                    <KPICard title="Total Hospitals" value={totalHospitals} icon={Building2} color="orange" />
+                    <KPICard title="Total Hospitals" value={totalHospitals} icon={Building2} color="amber" />
                     <KPICard title="Active Hospitals" value={activeHospitals} icon={Hospital} color="green" />
                     <KPICard title="Total Users" value={totalUsers} icon={Users} color="blue" />
                     <KPICard title="System Status" value="Online" icon={Activity} color="green" />

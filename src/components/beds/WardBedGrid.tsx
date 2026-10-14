@@ -171,7 +171,7 @@ export function WardBedGrid({ wardId, hospitalId, isAdmin }: { wardId: string, h
                     <span className="flex items-center gap-1">🟡 Maintenance</span>
                 </div>
                 {isAdmin && (
-                    <Button onClick={() => setIsAddBedOpen(true)} className="bg-orange-500 hover:bg-orange-600 text-white flex items-center gap-2">
+                    <Button onClick={() => setIsAddBedOpen(true)} className="bg-[#1A56DB] hover:bg-[#1E40AF] text-white flex items-center gap-2">
                         <Plus className="w-4 h-4" /> Add Beds
                     </Button>
                 )}
@@ -324,7 +324,7 @@ export function WardBedGrid({ wardId, hospitalId, isAdmin }: { wardId: string, h
 
                         <div className="flex justify-end gap-3 pt-4">
                             <Button type="button" variant="outline" onClick={() => setIsAddBedOpen(false)}>Cancel</Button>
-                            <Button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white">Add Bed{isBulkAdd ? 's' : ''}</Button>
+                            <Button type="submit" className="bg-[#1A56DB] hover:bg-[#1E40AF] text-white">Add Bed{isBulkAdd ? 's' : ''}</Button>
                         </div>
                     </form>
                 </DialogContent>
@@ -360,15 +360,15 @@ export function WardBedGrid({ wardId, hospitalId, isAdmin }: { wardId: string, h
                                 <button
                                     key={patient.id}
                                     onClick={() => handleAssignPatient(patient.id)}
-                                    className="w-full text-left px-4 py-3 hover:bg-orange-50 transition-colors flex items-center justify-between group"
+                                    className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors flex items-center justify-between group"
                                 >
                                     <div>
-                                        <div className="font-semibold text-gray-900 group-hover:text-orange-700">{patient.name}</div>
+                                        <div className="font-semibold text-gray-900 group-hover:text-blue-700">{patient.name}</div>
                                         <div className="text-xs text-gray-500">
                                             {patient.phone || "No phone"}{patient.gender ? ` • ${patient.gender}` : ""}
                                         </div>
                                     </div>
-                                    <span className="text-xs text-orange-600 opacity-0 group-hover:opacity-100 font-medium">Assign →</span>
+                                    <span className="text-xs text-[#1A56DB] opacity-0 group-hover:opacity-100 font-medium">Assign →</span>
                                 </button>
                             ))
                         )}

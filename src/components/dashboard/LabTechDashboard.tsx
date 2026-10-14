@@ -10,7 +10,7 @@ export function LabTechDashboard() {
             <PageHeader title="Laboratory & Diagnostics" />
             <div className="p-4 md:p-6 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-                    <KPICard title="Pending Tests" value={0} subtitle="Waiting for results" icon={Clock} color="orange" trend="up" />
+                    <KPICard title="Pending Tests" value={0} subtitle="Waiting for results" icon={Clock} color="amber" trend="up" />
                     <KPICard title="Reports Today" value={0} subtitle="Generated" icon={FileCheck} color="green" />
                     <KPICard title="Total Records" value={0} subtitle="In medical history" icon={FileText} color="blue" />
                     <KPICard title="Active Requests" value={0} subtitle="From doctors" icon={FlaskConical} color="blue" />

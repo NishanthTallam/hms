@@ -30,11 +30,11 @@ export default function PharmacyPage() {
     const handleDelete = async () => { if (!deleteId) return; await fetch(`/api/pharmacy/${deleteId}`, { method: "DELETE" }); setDeleteId(null); fetchMedicines(); };
 
     return (
-        <><PageHeader title="Pharmacy" action={<Link href="/hospital/pharmacy/new"><Button className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white"><Plus className="h-4 w-4 mr-2" />Add Medicine</Button></Link>} />
+        <><PageHeader title="Pharmacy" action={<Link href="/hospital/pharmacy/new"><Button className="w-full sm:w-auto bg-[#1A56DB] hover:bg-[#1E40AF] text-white"><Plus className="h-4 w-4 mr-2" />Add Medicine</Button></Link>} />
             <div className="p-4 md:p-6">
                 {lowStockCount > 0 && <div className="mb-4 rounded-lg bg-amber-50 border border-amber-200 p-4 flex items-center gap-3"><AlertTriangle className="h-5 w-5 text-amber-500 shrink-0" /><p className="text-sm text-amber-800"><span className="font-medium">{lowStockCount} medicines are low on stock or critical</span></p></div>}
                 <div className="mb-4 flex justify-end"><div className="relative w-full sm:w-72"><Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" /><Input placeholder="Search medicines..." value={search} onChange={e => setSearch(e.target.value)} className="pl-10" /></div></div>
-                {loading ? <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+                {loading ? <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div>
                     : filtered.length === 0 ? <EmptyState icon={<Pill className="h-12 w-12" />} title="No medicines" description="Add your first medicine" />
                         : <div className="bg-white rounded-xl border overflow-hidden"><div className="overflow-x-auto"><table className="min-w-[800px] w-full text-sm">
                             <thead><tr className="border-b bg-gray-50"><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Medicine</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Category</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Stock</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Status</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Expiry</th><th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Price</th><th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase">Actions</th></tr></thead>

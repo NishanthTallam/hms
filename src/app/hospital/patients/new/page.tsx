@@ -47,7 +47,7 @@ export default function NewPatientPage() {
                         <div><Label>Contact Phone</Label><Input value={form.emergencyContactPhone} onChange={e => setForm({ ...form, emergencyContactPhone: e.target.value })} /></div>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                        <Button type="submit" className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600" disabled={loading}>{loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Registering...</> : "Register Patient"}</Button>
+                        <Button type="submit" className="w-full sm:w-auto bg-[#1A56DB] hover:bg-[#1E40AF]" disabled={loading}>{loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Registering...</> : "Register Patient"}</Button>
                         <Button type="button" variant="outline" className="w-full sm:w-auto" onClick={() => router.back()}>Cancel</Button>
                     </div>
                 </form>

@@ -8,9 +8,19 @@ export async function GET(req: NextRequest) {
     const guard = await apiGuard(req, ["admin", "staff", "doctor"]);
     if (guard instanceof NextResponse) return guard;
     const { hospitalId } = guard;
+    const url = new URL(req.url);
+    const search = url.searchParams.get("search") || "";
 
     const doctors = await prisma.doctor.findMany({
-        where: { hospitalId },
+        where: {
+            hospitalId,
+            ...(search ? {
+                OR: [
+                    { name: { contains: search, mode: "insensitive" } },
+                    { specialization: { contains: search, mode: "insensitive" } },
+                ],
+            } : {}),
+        },
         orderBy: { name: "asc" },
     });
 

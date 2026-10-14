@@ -20,7 +20,7 @@ export function WardBoyDashboard() {
         return (
             <>
                 <PageHeader title="Ward Management" />
-                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+                <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-[#1A56DB]" /></div>
             </>
         );
     }
@@ -32,7 +32,7 @@ export function WardBoyDashboard() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
                     <KPICard title="Total Beds" value={stats?.total_beds || 0} subtitle="Mapped to wards" icon={Bed} color="blue" />
                     <KPICard title="Available Beds" value={stats?.available_beds || 0} subtitle="Ready for patients" icon={UserCheck} color="green" />
-                    <KPICard title="Occupied Beds" value={stats?.occupied_beds || 0} subtitle="Currently in use" icon={Activity} color="orange" trend="up" />
+                    <KPICard title="Occupied Beds" value={stats?.occupied_beds || 0} subtitle="Currently in use" icon={Activity} color="amber" trend="up" />
                     <KPICard title="Maintenance" value={stats?.maintenance_beds || 0} subtitle="Requires cleaning/repair" icon={Thermometer} color="red" />
                 </div>
 
@@ -47,7 +47,7 @@ export function WardBoyDashboard() {
                         </p>
                         <a
                             href="/hospital/beds"
-                            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 rounded-lg font-medium transition-colors"
+                            className="bg-[#1A56DB] hover:bg-[#1E40AF] text-white px-6 py-2.5 rounded-lg font-medium transition-colors"
                         >
                             Open Bed Map
                         </a>

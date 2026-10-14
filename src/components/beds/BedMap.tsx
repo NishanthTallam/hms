@@ -120,7 +120,7 @@ export function BedMap({ hospitalId }: { hospitalId: string }) {
                                     <span className="text-red-700">Occupied: {occupied}</span>
                                     <span className="text-gray-500">Total: {wardBeds.length}</span>
                                 </div>
-                                <a href={`/hospital/beds/wards/${wardBeds[0]?.wardId}`} className="text-sm font-semibold text-orange-600 hover:text-orange-700 bg-orange-50 px-3 py-1 rounded-md border border-orange-200">
+                                <a href={`/hospital/beds/wards/${wardBeds[0]?.wardId}`} className="text-sm font-semibold text-[#1A56DB] hover:text-blue-700 bg-blue-50 px-3 py-1 rounded-md border border-blue-200">
                                     View Ward →
                                 </a>
                             </div>
@@ -190,15 +190,15 @@ export function BedMap({ hospitalId }: { hospitalId: string }) {
                                 <button
                                     key={patient.id}
                                     onClick={() => handleAssignPatient(patient.id)}
-                                    className="w-full text-left px-4 py-3 hover:bg-orange-50 transition-colors flex items-center justify-between group"
+                                    className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors flex items-center justify-between group"
                                 >
                                     <div>
-                                        <div className="font-semibold text-gray-900 group-hover:text-orange-700">{patient.name}</div>
+                                        <div className="font-semibold text-gray-900 group-hover:text-blue-700">{patient.name}</div>
                                         <div className="text-xs text-gray-500">
                                             {patient.phone || "No phone"}{patient.gender ? ` • ${patient.gender}` : ""}
                                         </div>
                                     </div>
-                                    <span className="text-xs text-orange-600 opacity-0 group-hover:opacity-100 font-medium">Assign →</span>
+                                    <span className="text-xs text-[#1A56DB] opacity-0 group-hover:opacity-100 font-medium">Assign →</span>
                                 </button>
                             ))
                         )}

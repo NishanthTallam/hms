@@ -15,14 +15,13 @@ import {
     LogOut,
     Menu,
     X,
-    Hospital,
     AlertCircle,
     Bed,
     Droplets,
     Wind,
     FileText,
+    FlaskConical,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const navItems = [
     { label: "Dashboard", href: "/hospital/dashboard", icon: LayoutDashboard },
@@ -36,7 +35,7 @@ const navItems = [
     { label: "Blood Bank", href: "/hospital/blood-bank", icon: Droplets },
     { label: "Oxygen", href: "/hospital/oxygen", icon: Wind },
     { label: "Billing", href: "/hospital/billing", icon: Receipt },
-    { label: "Pharmacy", href: "/hospital/pharmacy", icon: Pill },
+    { label: "Pharmacy", href: "/hospital/pharmacy", icon: FlaskConical },
     { label: "Staff", href: "/hospital/staff", icon: Users },
 ];
 
@@ -46,10 +45,11 @@ interface SidebarProps {
     userRole?: string;
     staffRole?: string;
     lowStockCount?: number;
+    open?: boolean;
+    onClose?: () => void;
 }
 
-export function Sidebar({ hospitalName = "Hospital", userName = "User", userRole = "staff", staffRole, lowStockCount = 0 }: SidebarProps) {
-    const [open, setOpen] = useState(false);
+export function Sidebar({ hospitalName = "Hospital", userName = "User", userRole = "staff", staffRole, lowStockCount = 0, open = false, onClose }: SidebarProps) {
     const pathname = usePathname();
 
     const filteredNavItems = navItems.filter(item => {
@@ -90,40 +90,50 @@ export function Sidebar({ hospitalName = "Hospital", userName = "User", userRole
         return false;
     });
 
+    const userInitials = userName.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase();
+
     const sidebarContent = (
         <>
-            <div className="flex items-center gap-3 px-4 py-5 border-b border-gray-200">
-                <div className="h-9 w-9 rounded-lg bg-orange-500 flex items-center justify-center">
-                    <Hospital className="h-5 w-5 text-white" />
+            {/* Logo */}
+            <div className="flex items-center gap-3 px-5 py-5 border-b border-[#1E293B]">
+                <div className="h-8 w-8 rounded-lg bg-[#1A56DB] flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold text-sm">H</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-gray-900 truncate">{hospitalName}</p>
-                    <p className="text-xs text-gray-500">Hospital Management</p>
+                    <p className="text-sm font-bold text-white truncate tracking-tight">{hospitalName}</p>
+                    <p className="text-[11px] text-[#64748B]">Management System</p>
                 </div>
-                <button className="lg:hidden p-1" onClick={() => setOpen(false)}>
-                    <X className="h-5 w-5 text-gray-400" />
+                <button className="lg:hidden p-1 text-[#64748B] hover:text-white" onClick={onClose}>
+                    <X className="h-5 w-5" />
                 </button>
             </div>
 
-            <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+            {/* Navigation */}
+            <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
+                <p className="text-[10px] font-semibold text-[#475569] uppercase tracking-[0.1em] px-3 py-2">Main Menu</p>
                 {filteredNavItems.map((item) => {
-                    const isActive = pathname.startsWith(item.href);
+                    const isActive = pathname === item.href || (item.href !== "/hospital/dashboard" && pathname.startsWith(item.href));
                     return (
                         <Link
                             key={item.href}
                             href={item.href}
-                            onClick={() => setOpen(false)}
+                            onClick={onClose}
                             className={cn(
-                                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors relative",
+                                "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 relative",
                                 isActive
-                                    ? "bg-orange-50 text-orange-600"
-                                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                    ? "bg-[#1A56DB] text-white shadow-sm"
+                                    : "text-[#94A3B8] hover:bg-[#1E293B] hover:text-white"
                             )}
                         >
-                            <item.icon className={cn("h-5 w-5 shrink-0", isActive ? "text-orange-500" : "text-gray-400")} />
+                            <item.icon className={cn("h-[18px] w-[18px] shrink-0", isActive ? "text-white" : "text-[#64748B]")} />
                             <span>{item.label}</span>
+                            {item.label === "Emergency" && (
+                                <span className="ml-auto h-5 min-w-[20px] rounded-full bg-red-500 text-white text-[11px] font-semibold flex items-center justify-center px-1.5">
+                                    !
+                                </span>
+                            )}
                             {item.label === "Pharmacy" && lowStockCount > 0 && (
-                                <span className="absolute right-2 h-5 min-w-[20px] rounded-full bg-red-500 text-white text-xs flex items-center justify-center px-1">
+                                <span className="ml-auto h-5 min-w-[20px] rounded-full bg-[#1A56DB] text-white text-[11px] font-semibold flex items-center justify-center px-1.5">
                                     {lowStockCount > 9 ? "9+" : lowStockCount}
                                 </span>
                             )}
@@ -132,19 +142,20 @@ export function Sidebar({ hospitalName = "Hospital", userName = "User", userRole
                 })}
             </nav>
 
-            <div className="border-t border-gray-200 px-4 py-4">
-                <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
-                        <span className="text-xs font-semibold text-gray-600">{userName.charAt(0).toUpperCase()}</span>
+            {/* User profile */}
+            <div className="border-t border-[#1E293B] px-3 py-3">
+                <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-[#1E293B] transition-colors cursor-pointer">
+                    <div className="h-8 w-8 rounded-full bg-[#1A56DB] flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-xs font-semibold">{userInitials}</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">{userName}</p>
-                        <p className="text-xs text-gray-500 capitalize">{userRole}</p>
+                        <p className="text-[13px] font-semibold text-[#F1F5F9] truncate">{userName}</p>
+                        <p className="text-[11px] text-[#64748B] capitalize">{staffRole || userRole}</p>
                     </div>
                     <form action="/api/auth/sign-out" method="POST">
-                        <Button variant="ghost" size="sm" type="submit" className="h-8 w-8 p-0">
-                            <LogOut className="h-4 w-4 text-gray-400" />
-                        </Button>
+                        <button type="submit" className="p-1.5 rounded-md text-[#64748B] hover:text-white hover:bg-[#334155] transition-colors" title="Sign out">
+                            <LogOut className="h-4 w-4" />
+                        </button>
                     </form>
                 </div>
             </div>
@@ -153,28 +164,23 @@ export function Sidebar({ hospitalName = "Hospital", userName = "User", userRole
 
     return (
         <>
+            {/* Mobile overlay */}
             {open && (
                 <div
-                    className="fixed inset-0 bg-black/40 z-20 lg:hidden"
-                    onClick={() => setOpen(false)}
+                    className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+                    onClick={onClose}
                 />
             )}
 
+            {/* Sidebar */}
             <aside className={cn(
-                "fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 flex flex-col",
+                "fixed inset-y-0 left-0 z-50 w-[240px] bg-[#0F172A] flex flex-col",
                 "transform transition-transform duration-200 ease-in-out",
                 open ? "translate-x-0" : "-translate-x-full",
                 "lg:translate-x-0 lg:static lg:z-auto"
             )}>
                 {sidebarContent}
             </aside>
-
-            <button
-                className="lg:hidden fixed top-4 left-4 z-10 p-2 bg-white rounded-lg shadow-md border border-gray-200"
-                onClick={() => setOpen(true)}
-            >
-                <Menu className="h-5 w-5 text-gray-600" />
-            </button>
         </>
     );
 }

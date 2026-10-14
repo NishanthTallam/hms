@@ -45,7 +45,7 @@ export default function LoginPage() {
     return (
         <div className="w-full max-w-md">
             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-orange-500 mb-4 shadow-lg shadow-orange-500/25">
+                <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-[#1A56DB] mb-4 shadow-lg shadow-blue-500/25">
                     <Hospital className="h-7 w-7 text-white" />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-900">HealthTech HMS</h1>
@@ -96,7 +96,7 @@ export default function LoginPage() {
 
                         <Button
                             type="submit"
-                            className="w-full h-11 bg-orange-500 hover:bg-orange-600 text-white font-medium"
+                            className="w-full h-11 bg-[#1A56DB] hover:bg-[#1E40AF] text-white font-medium"
                             disabled={loading}
                         >
                             {loading ? (

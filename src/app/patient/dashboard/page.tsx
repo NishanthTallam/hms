@@ -2,9 +2,10 @@ import { requireRole } from "@/lib/auth-utils";
 import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, FileText, Pill, Activity } from "lucide-react";
+import { Calendar, FileText, Pill, Activity, Download, Trash2, ShieldCheck } from "lucide-react";
 import { format } from "date-fns";
 import { redirect } from "next/navigation";
+import { PatientDataRights } from "@/components/shared/PatientDataRights";
 
 export default async function PatientDashboard() {
     const session = await requireRole(["patient"]);
@@ -103,7 +104,7 @@ export default async function PatientDashboard() {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Active Prescriptions</CardTitle>
-                        <Pill className="h-4 w-4 text-orange-600" />
+                        <Pill className="h-4 w-4 text-[#1A56DB]" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{activePrescriptions}</div>
@@ -139,6 +140,8 @@ export default async function PatientDashboard() {
                     </CardContent>
                 </Card>
             </div>
+            {/* Data Rights Section */}
+            <PatientDataRights />
         </div>
     );
 }
